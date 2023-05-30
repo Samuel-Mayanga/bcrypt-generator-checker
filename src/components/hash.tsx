@@ -35,7 +35,7 @@ export const HashComponet = () => {
 
   return (
     <Box px={5} py={10} bg="white" borderRadius="2xl">
-      <VStack alignItems="flex-start">
+      <VStack alignItems="flex-start" spacing={3}>
         <Text fontSize="2xl" fontWeight="semibold">
           Encrypt
         </Text>
@@ -44,7 +44,7 @@ export const HashComponet = () => {
         </Text>
         {hashResult && (
           <Box w="full" p={3} borderRadius="lg" bgColor="teal.100">
-            <Text>{hashResult}</Text>
+            {loading ? "checking...." : hashResult}
           </Box>
         )}
         <Flex w="full" gap={4}>
