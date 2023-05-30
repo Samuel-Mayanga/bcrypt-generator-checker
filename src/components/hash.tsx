@@ -1,14 +1,34 @@
-import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
+import { UnlockIcon } from "@chakra-ui/icons";
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Box,
+  Button,
+  Flex,
+  Input,
+  Text,
+  VStack,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import { hash } from "bcryptjs";
 import { useState } from "react";
 
 export const HashComponet = () => {
+  const [loading, setLoading] = useState(false);
   const [inputString, setInputString] = useState("");
+  const [jumps, setJumps] = useState(10);
   const [hashResult, setHasResult] = useState<string>();
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const crypt = async () => {
     try {
-      let hashed = await hash(inputString, 10);
+      let hashed = await hash(inputString, jumps);
       setHasResult(hashed);
     } catch (error) {}
   };
@@ -32,8 +52,36 @@ export const HashComponet = () => {
             placeholder="String"
             onChange={(e) => setInputString(e.target.value)}
           />
-          <Button onClick={crypt}>Encrypt</Button>
+          <Button
+            colorScheme="red"
+            leftIcon={<UnlockIcon />}
+            loadingText="hashing"
+            isLoading={loading}
+            onClick={async () => {
+              setLoading(true);
+              await sleep(1500);
+              crypt();
+              setLoading(false);
+            }}
+          >
+            encrypt
+          </Button>
         </Flex>
+        <FormControl py={2}>
+          <FormLabel fontWeight="semibold">rounds</FormLabel>
+
+          <NumberInput
+            w="30%"
+            defaultValue={10}
+            onChange={(value) => setJumps(parseInt(value))}
+          >
+            <NumberInputField readOnly />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
       </VStack>
     </Box>
   );
