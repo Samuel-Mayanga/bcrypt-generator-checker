@@ -8,7 +8,7 @@ function App() {
       <Flex p={5} bg="teal.500">
         <Heading color="white">Bcrypt - js</Heading>
       </Flex>
-      <SimpleGrid columns={2} py={5}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} py={5}>
         <Box p={5}>
           <HashComponet />
         </Box>
